@@ -1171,6 +1171,9 @@
         "enum": [
           "market_making",
           "trading_tentacles",
+          "dca",
+          "index",
+          "grid",
           "copy",
           "generic_process",
           "generic_workflow"
@@ -1535,6 +1538,32 @@
             "items": {
               "$ref": "#/components/schemas/EvaluatorConfiguration"
             }
+          }
+        }
+      },
+      "DCAConfiguration": {
+        "description": "DCAConfiguration",
+        "type": "object",
+        "required": [
+          "configuration_type"
+        ],
+        "properties": {
+          "configuration_type": {
+            "$ref": "#/components/schemas/ActionConfigurationType",
+            "description": "dca"
+          }
+        }
+      },
+      "RSIMomentumEvaluatorConfiguration": {
+        "description": "RSIMomentumEvaluatorConfiguration",
+        "type": "object",
+        "required": [
+          "configuration_type"
+        ],
+        "properties": {
+          "configuration_type": {
+            "$ref": "#/components/schemas/ActionConfigurationType",
+            "description": "RSIMomentumEvaluator"
           }
         }
       },

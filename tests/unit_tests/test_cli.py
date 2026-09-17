@@ -172,51 +172,52 @@ class TestStartOctobot:
                 call_order.append(name)
             return _tracked
 
-        with mock.patch.object(octobot_cli, "_init_cli_overriden_folders", mock.Mock(return_value=({}, None))), \
-                mock.patch.object(octobot_cli, "_assert_process_child_folder_overrides", mock.Mock()), \
-                mock.patch.object(octobot_cli.octobot_logger, "init_logger", mock.Mock(return_value=logger)), \
-                mock.patch.object(octobot_cli, "_log_environment", mock.Mock()), \
-                mock.patch.object(octobot_cli.octobot_community.ActivityMetrics, "initialize_tracker", mock.Mock()), \
-                mock.patch.object(
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(mock.patch.object(octobot_cli, "_init_cli_overriden_folders", mock.Mock(return_value=({}, None))))
+            stack.enter_context(mock.patch.object(octobot_cli, "_assert_process_child_folder_overrides", mock.Mock()))
+            stack.enter_context(mock.patch.object(octobot_cli.octobot_logger, "init_logger", mock.Mock(return_value=logger)))
+            stack.enter_context(mock.patch.object(octobot_cli, "_log_environment", mock.Mock()))
+            stack.enter_context(mock.patch.object(octobot_cli.octobot_community.ActivityMetrics, "initialize_tracker", mock.Mock()))
+            stack.enter_context(mock.patch.object(
                     octobot_cli,
                     "_create_startup_config",
                     mock.Mock(return_value=(config, False)),
-                ), \
-                mock.patch.object(octobot_cli, "_log_terms_if_unaccepted", track("terms")), \
-                mock.patch.object(octobot_cli, "_get_authenticated_community_if_possible", mock.AsyncMock(return_value=None)), \
-                mock.patch.object(
+                ))
+            stack.enter_context(mock.patch.object(octobot_cli, "_log_terms_if_unaccepted", track("terms")))
+            stack.enter_context(mock.patch.object(octobot_cli, "_get_authenticated_community_if_possible", mock.AsyncMock(return_value=None)))
+            stack.enter_context(mock.patch.object(
                     octobot_cli.asyncio,
                     "run",
                     lambda coro: octobot_cli.asyncio.get_event_loop_policy().new_event_loop().run_until_complete(coro),
-                ), \
-                mock.patch.object(octobot_cli, "_configure_profile_sync_user", track("sync_user")), \
-                mock.patch.object(
+                ))
+            stack.enter_context(mock.patch.object(octobot_cli, "_configure_profile_sync_user", track("sync_user")))
+            stack.enter_context(mock.patch.object(
                     octobot_cli,
                     "_activate_saved_profile_after_sync",
                     track("activate_profile"),
-                ), \
-                mock.patch.object(octobot_cli, "_load_or_create_tentacles", track("tentacles")), \
-                mock.patch.object(octobot_cli, "_apply_forced_configs", track("forced_configs")), \
-                mock.patch.object(octobot_cli, "update_config_with_args", track("update_config")), \
-                mock.patch.object(
+                ))
+            stack.enter_context(mock.patch.object(octobot_cli, "_load_or_create_tentacles", track("tentacles")))
+            stack.enter_context(mock.patch.object(octobot_cli, "_apply_forced_configs", track("forced_configs")))
+            stack.enter_context(mock.patch.object(octobot_cli, "update_config_with_args", track("update_config")))
+            stack.enter_context(mock.patch.object(
                     octobot_cli.configuration_manager,
                     "config_health_check",
                     track("health_check"),
-                ), \
-                mock.patch.object(octobot_cli.limits, "apply_config_limits", mock.Mock(return_value=[])), \
-                mock.patch.object(
+                ))
+            stack.enter_context(mock.patch.object(octobot_cli.limits, "apply_config_limits", mock.Mock(return_value=[])))
+            stack.enter_context(mock.patch.object(
                     octobot_cli.configuration_manager,
                     "get_distribution",
                     mock.Mock(return_value=octobot_cli.enums.OctoBotDistribution.DEFAULT),
-                ), \
-                mock.patch.object(
+                ))
+            stack.enter_context(mock.patch.object(
                     octobot_cli.octobot_class,
                     "OctoBot",
                     mock.Mock(),
-                ), \
-                mock.patch.object(octobot_cli, "_disable_interface_from_param", mock.Mock()), \
-                mock.patch.object(octobot_cli.commands, "set_global_bot_instance", mock.Mock()), \
-                mock.patch.object(octobot_cli.commands, "run_bot", mock.Mock()):
+                ))
+            stack.enter_context(mock.patch.object(octobot_cli, "_disable_interface_from_param", mock.Mock()))
+            stack.enter_context(mock.patch.object(octobot_cli.commands, "set_global_bot_instance", mock.Mock()))
+            stack.enter_context(mock.patch.object(octobot_cli.commands, "run_bot", mock.Mock()))
             octobot_cli.start_octobot(args, "default.json")
 
         sync_user_index = call_order.index("sync_user")

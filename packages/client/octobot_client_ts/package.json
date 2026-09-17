@@ -50,6 +50,10 @@
   "devDependencies": {
     "@types/node": "^20.11.0",
     "typescript": "~5.9.2",
-    "vitest": "^2.1.9"
+    "vitest": "^3.2.7"
+  },
+  "overrides": {
+    "hono": "^4.13.5",
+    "esbuild": "^0.25.0"
   }
 }

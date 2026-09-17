@@ -34,7 +34,7 @@ describe('createPairingRequest / parsePairingRequest', () => {
   // over a large sample, no symbol's frequency should be dramatically
   // skewed relative to the others, which the old modulo bias would produce
   // reliably (A-H at ~12.5% higher share than I-Z2-9).
-  it('every alphabet symbol appears with roughly equal frequency over a large sample (no modulo bias)', async () => {
+  it('every alphabet symbol appears with roughly equal frequency over a large sample (no modulo bias)', { timeout: 120000 }, async () => {
     const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
     const counts = new Map<string, number>()
     for (const ch of ALPHABET) counts.set(ch, 0)

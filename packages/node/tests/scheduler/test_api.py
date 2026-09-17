@@ -145,7 +145,7 @@ class TestGetNodeStatus:
 
             assert result["node_type"] == "none"
             assert result["status"] == "stopped"
-            assert result["workers"] is 0
+            assert result["workers"] == 0
 
 
 class TestGetTaskMetrics:

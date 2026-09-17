@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "description": "JSON Schema protocol types and codegen",
   "scripts": {
-    "test:models": "python -m unittest discover -s test",
+    "test:models": "python3 -m unittest discover -s test",
     "test:postprocess": "node --test test/postprocess-typescript.test.mjs",
     "test:postprocess:codegen": "node --test test/postprocess-typescript.codegen.test.mjs",
     "test": "npm run test:postprocess && npm run test:postprocess:codegen && npm run test:models",
@@ -16,5 +16,12 @@
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "2.32.0"
+  },
+  "overrides": {
+    "axios": "^1.18.0",
+    "brace-expansion": "^5.0.9",
+    "form-data": "^4.0.6",
+    "ip-address": "^10.3.1",
+    "shell-quote": "^1.9.0"
   }
 }
